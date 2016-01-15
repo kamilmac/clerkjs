@@ -1,0 +1,25 @@
+{
+  "name": "clerkjs",
+  "version": "1.0.0",
+  "description": "js observable store",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamilmac/clerkjs.git"
+  },
+  "author": "Kamil Macinski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamilmac/clerkjs/issues"
+  },
+  "homepage": "https://github.com/kamilmac/clerkjs#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-typescript": "^2.10.0",
+    "gulp-uglify": "^1.5.1"
+  }
+}

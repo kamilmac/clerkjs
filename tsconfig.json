@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "out": "clerk.js",
+        "sourceMap": true
+    },
+    "files": [
+        "src/clerk.ts"
+    ]
+}
