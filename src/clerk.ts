@@ -1,9 +1,9 @@
 class Clerk {
-    private _listeners: any;
-    private _admins: any;
-    private _history: any;
+    private _listeners = [];
+    private _clerks = [];
+    private _history = [];
     private _now: number = 0;
-    private $app_data;    
+    private $app_data = {};    
     
     private _save(prop, value, admin_id, dance = false) {
         prop = prop.split('.')
@@ -25,6 +25,7 @@ class Clerk {
         if(!dance) {
             this._history.push({
                 old_val: old_value,
+                new_val: value,
                 prop: prop,
                 invalidatedBy: admin_id
             });
@@ -73,34 +74,34 @@ class Clerk {
     private _lets_dance() {      // put on your red shoes and dance the blues
         if(this._now >= this._history.length) { this._now = this._history.length; }
         else if(this._now < 0) { this._now = 0; }
-        
+        console.log("state: ", this._history)
         let bowie: any = this._history[this._now];
-        this._save(bowie.prop, bowie.old_val, true);
+        this._save(bowie.prop.join('.'), bowie.old_val, false, true);
     } 
     
     private _get_admin(id) {
-        for(let i = 0, l = this._admins.length; i < l; i+=1) {
-            if(this._admins[i].id == id) {
-                return this._admins[i];
+        for(let i = 0, l = this._clerks.length; i < l; i+=1) {
+            if(this._clerks[i].id == id) {
+                return this._clerks[i];
             }
         }
         return false
     }
         
-    constructor (model) {
-        let $app_data = model || {};
+    constructor (model: any) {
+        this.$app_data = model || {};
     }
     
     
     // Public API
-    register = (id) => {
-        for(let i = 0, l = this._admins.length; i < l; i+=1) {
-            if(this._admins[i].id == id) {
-                console.log("Model: Duplicated admin.");
+    registerClerk = (id) => {
+        for(let i = 0, l = this._clerks.length; i < l; i+=1) {
+            if(this._clerks[i].id == id) {
+                console.log("Model: Duplicated clerk.");
                 return false;
             }
         }
-        this._admins.push({
+        this._clerks.push({
             id: id,
             writes: 0
         });
@@ -119,11 +120,13 @@ class Clerk {
     
     undo = (steps = 1) => {
         this._now = this._now - steps;
+        console.log("undo now: ", this._now);
         this._lets_dance();
     }
     
     redo = (steps = 1) => {
         this._now = this._now + steps;
+        console.log("redo now: ", this._now);
         this._lets_dance();
     }
     

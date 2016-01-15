@@ -1,15 +1,19 @@
 var Clerk = (function () {
     function Clerk(model) {
         var _this = this;
+        this._listeners = [];
+        this._clerks = [];
+        this._history = [];
         this._now = 0;
-        this.register = function (id) {
-            for (var i = 0, l = _this._admins.length; i < l; i += 1) {
-                if (_this._admins[i].id == id) {
-                    console.log("Model: Duplicated admin.");
+        this.$app_data = {};
+        this.registerClerk = function (id) {
+            for (var i = 0, l = _this._clerks.length; i < l; i += 1) {
+                if (_this._clerks[i].id == id) {
+                    console.log("Model: Duplicated clerk.");
                     return false;
                 }
             }
-            _this._admins.push({
+            _this._clerks.push({
                 id: id,
                 writes: 0
             });
@@ -27,11 +31,13 @@ var Clerk = (function () {
         this.undo = function (steps) {
             if (steps === void 0) { steps = 1; }
             _this._now = _this._now - steps;
+            console.log("undo now: ", _this._now);
             _this._lets_dance();
         };
         this.redo = function (steps) {
             if (steps === void 0) { steps = 1; }
             _this._now = _this._now + steps;
+            console.log("redo now: ", _this._now);
             _this._lets_dance();
         };
         this.bind = function (id, bindings) {
@@ -58,7 +64,7 @@ var Clerk = (function () {
                 return _this._getOnce(prop);
             }
         };
-        var $app_data = model || {};
+        this.$app_data = model || {};
     }
     Clerk.prototype._save = function (prop, value, admin_id, dance) {
         if (dance === void 0) { dance = false; }
@@ -81,6 +87,7 @@ var Clerk = (function () {
         if (!dance) {
             this._history.push({
                 old_val: old_value,
+                new_val: value,
                 prop: prop,
                 invalidatedBy: admin_id
             });
@@ -134,13 +141,14 @@ var Clerk = (function () {
         else if (this._now < 0) {
             this._now = 0;
         }
+        console.log("state: ", this._history);
         var bowie = this._history[this._now];
-        this._save(bowie.prop, bowie.old_val, true);
+        this._save(bowie.prop.join('.'), bowie.old_val, false, true);
     };
     Clerk.prototype._get_admin = function (id) {
-        for (var i = 0, l = this._admins.length; i < l; i += 1) {
-            if (this._admins[i].id == id) {
-                return this._admins[i];
+        for (var i = 0, l = this._clerks.length; i < l; i += 1) {
+            if (this._clerks[i].id == id) {
+                return this._clerks[i];
             }
         }
         return false;

@@ -1,9 +1,13 @@
-# clerkjs
-Javascript object store with automatic PubSub based updates.
-
-### Code Example (demo)
-
-```javascript
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ClerkJS demo</title>
+</head>
+<body>
+    <script src="../dist/clerk.js"></script>
+    <script>
+        
         // Create store with your app model.
         var store = new Clerk({
             account: {
@@ -44,4 +48,7 @@ Javascript object store with automatic PubSub based updates.
         store.undo();
         store.undo();
         store.redo();
-```
+         
+    </script>
+</body>
+</html>
