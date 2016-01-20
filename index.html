@@ -24,49 +24,70 @@
 
 <p>Javascript object store with automatic PubSub based updates.</p>
 
+<h1>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>HOW IT WORKS</h1>
+
+<h4>
+<a id="create-store" class="anchor" href="#create-store" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create store.</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// JS object with your app model.</span>
+<span class="pl-k">var</span> store <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Clerk</span>({
+    account<span class="pl-k">:</span> {
+        user<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kamil<span class="pl-pds">"</span></span>,
+        weather<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>cold and sunny<span class="pl-pds">"</span></span>,
+        where<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Warszawa<span class="pl-pds">"</span></span>
+    },
+    favourites<span class="pl-k">:</span> {
+        planet<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>jupiter<span class="pl-pds">"</span></span>,
+        star<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>vega<span class="pl-pds">"</span></span>,
+        color<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>orange<span class="pl-pds">"</span></span>
+    }
+});</pre></div>
+
+<h4>
+<a id="observe-store-and-react-to-changes" class="anchor" href="#observe-store-and-react-to-changes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Observe store and react to changes.</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Bind callbacks to data changes.</span>
+<span class="pl-c">// Pass unique id as first argument in order to avoid multiple listeners.</span>
+<span class="pl-smi">store</span>.<span class="pl-en">bind</span>(<span class="pl-s"><span class="pl-pds">"</span>uniqueId<span class="pl-pds">"</span></span>, {
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">account.user</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">val</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>user changed: <span class="pl-pds">'</span></span>, val); },
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">account.where</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">val</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>user is at: <span class="pl-pds">'</span></span>, val); },
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">favourites.planet</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">val</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>fav planet: <span class="pl-pds">'</span></span>, val); },
+});
+
+<span class="pl-c">// Get current value once without binding.</span>
+<span class="pl-k">var</span> acc <span class="pl-k">=</span> <span class="pl-smi">store</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">"</span>account.user<span class="pl-pds">"</span></span>);</pre></div>
+
+<h4>
+<a id="create-clerk-with-rights-to-change-data" class="anchor" href="#create-clerk-with-rights-to-change-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Clerk with rights to change data.</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> clerk <span class="pl-k">=</span> <span class="pl-smi">store</span>.<span class="pl-en">registerClerk</span>(<span class="pl-s"><span class="pl-pds">"</span>kamil<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">// Change data in store -&gt; runs attached callbacks.</span>
+<span class="pl-smi">store</span>.<span class="pl-en">set</span>(clerk, {
+    <span class="pl-s"><span class="pl-pds">'</span>account.user<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Roger Moore<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>account.where<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>California<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>favourites.planet<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Pluto<span class="pl-pds">'</span></span>,
+});</pre></div>
+
 <h3>
-<a id="code-example-demo" class="anchor" href="#code-example-demo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Example (demo)</h3>
+<a id="under-development" class="anchor" href="#under-development" aria-hidden="true"><span class="octicon octicon-link"></span></a>[UNDER DEVELOPMENT]</h3>
 
-<div class="highlight highlight-source-js"><pre>        <span class="pl-c">// Create store with your app model.</span>
-        <span class="pl-k">var</span> store <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Clerk</span>({
-            account<span class="pl-k">:</span> {
-                user<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kamil<span class="pl-pds">"</span></span>,
-                weather<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>cold and sunny<span class="pl-pds">"</span></span>,
-                where<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Warszawa<span class="pl-pds">"</span></span>
-            },
-            favourites<span class="pl-k">:</span> {
-                planet<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>jupiter<span class="pl-pds">"</span></span>,
-                star<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>vega<span class="pl-pds">"</span></span>,
-                color<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>orange<span class="pl-pds">"</span></span>
-            }
-        });
+<h4>
+<a id="undo--redo-actions" class="anchor" href="#undo--redo-actions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Undo &amp; Redo actions.</h4>
 
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// UNDO &amp; REDO your last actions  </span>
+<span class="pl-smi">store</span>.<span class="pl-en">undo</span>();
+<span class="pl-smi">store</span>.<span class="pl-en">redo</span>();</pre></div>
 
-        <span class="pl-c">// Bind store changes to callbacks and initiate callbacks once.</span>
-        <span class="pl-c">// Pass unique id as first argument in order to avoid multiple listeners.</span>
-        <span class="pl-smi">store</span>.<span class="pl-en">bind</span>(<span class="pl-s"><span class="pl-pds">"</span>uniqueId<span class="pl-pds">"</span></span>, {
-            <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">account.user</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">val</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>user changed: <span class="pl-pds">'</span></span>, val); },
-            <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">account.where</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">val</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>user is at: <span class="pl-pds">'</span></span>, val); },
-            <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">favourites.planet</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">val</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>fav planet: <span class="pl-pds">'</span></span>, val); },
-        });
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>INSTALLATION</h1>
 
+<p>npm install <a href="https://github.com/kamilmac/clerkjs.git">https://github.com/kamilmac/clerkjs.git</a></p>
 
-        <span class="pl-c">// Create clerk with rights to change data.</span>
-        <span class="pl-k">var</span> clerk <span class="pl-k">=</span> <span class="pl-smi">store</span>.<span class="pl-en">registerClerk</span>(<span class="pl-s"><span class="pl-pds">"</span>kamil<span class="pl-pds">"</span></span>);
+<p>bower install <a href="https://github.com/kamilmac/clerkjs.git">https://github.com/kamilmac/clerkjs.git</a></p>
 
-
-        <span class="pl-c">// Change data in store -&gt; runs attached callbacks.</span>
-        <span class="pl-smi">store</span>.<span class="pl-en">set</span>(clerk, {
-            <span class="pl-s"><span class="pl-pds">'</span>account.user<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Roger Moore<span class="pl-pds">'</span></span>,
-            <span class="pl-s"><span class="pl-pds">'</span>account.where<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>California<span class="pl-pds">'</span></span>,
-            <span class="pl-s"><span class="pl-pds">'</span>favourites.planet<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Pluto<span class="pl-pds">'</span></span>,
-        });
-
-
-        <span class="pl-c">// UNDO &amp; REDO your last actions</span>
-        <span class="pl-smi">store</span>.<span class="pl-en">undo</span>();
-        <span class="pl-smi">store</span>.<span class="pl-en">undo</span>();
-        <span class="pl-smi">store</span>.<span class="pl-en">redo</span>();</pre></div>
+<p>source files are placed in "dist" folder.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/kamilmac/clerkjs">Clerkjs</a> is maintained by <a href="https://github.com/kamilmac">kamilmac</a>.</span>
