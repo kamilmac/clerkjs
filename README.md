@@ -4,7 +4,7 @@ Javascript object store with automatic PubSub based updates.
 
 # HOW IT WORKS
 
-#### CREATE STORE
+#### Create store.
 ```javascript
 // JS object with your app model.
 var store = new Clerk({
@@ -22,7 +22,7 @@ var store = new Clerk({
 ```
 
 
-#### OBSERVE STORE AND REACT TO CHANGES
+#### Observe store and react to changes.
 ```javascript
 // Bind callbacks to data changes.
 // Pass unique id as first argument in order to avoid multiple listeners.
@@ -36,7 +36,7 @@ store.bind("uniqueId", {
 var acc = store.get("account.user");
 ```
 
-#### CREATE CLERK WITH RIGHT TO CHANGE DATA
+#### Create Clerk with rights to change data.
 ```javascript
 var clerk = store.registerClerk("kamil");
 
@@ -49,7 +49,7 @@ store.set(clerk, {
 ```
 
 ### [UNDER DEVELOPMENT]
-#### UNDO & REDO ACTIONS
+#### Undo & Redo actions.
 ```javascript
 // UNDO & REDO your last actions  
 store.undo();
