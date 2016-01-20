@@ -1,10 +1,12 @@
 # clerkjs
 Javascript object store with automatic PubSub based updates.
 
-### Code Example (demo)
 
+# HOW IT WORKS
+
+#### CREATE STORE
 ```javascript
-// Create store with your app model.
+// JS object with your app model.
 var store = new Clerk({
     account: {
         user: "Kamil",
@@ -17,9 +19,12 @@ var store = new Clerk({
         color: "orange"
     }
 });
+```
 
 
-// Bind store changes to callbacks and initiate callbacks once.
+#### OBSERVE STORE AND REACT TO CHANGES
+```javascript
+// Bind callbacks to data changes.
 // Pass unique id as first argument in order to avoid multiple listeners.
 store.bind("uniqueId", {
     'account.user': function(val){ console.log('user changed: ', val); },
@@ -27,10 +32,13 @@ store.bind("uniqueId", {
     'favourites.planet': function(val){ console.log('fav planet: ', val); },
 });
 
+// Get current value once without binding.
+var acc = store.get("account.user");
+```
 
-// Create clerk with rights to change data.
+#### CREATE CLERK WITH RIGHT TO CHANGE DATA
+```javascript
 var clerk = store.registerClerk("kamil");
-
 
 // Change data in store -> runs attached callbacks.
 store.set(clerk, {
@@ -38,10 +46,23 @@ store.set(clerk, {
     'account.where': 'California',
     'favourites.planet': 'Pluto',
 });
+```
 
-
-// UNDO & REDO your last actions
-store.undo();
+### [UNDER DEVELOPMENT]
+#### UNDO & REDO ACTIONS
+```javascript
+// UNDO & REDO your last actions  
 store.undo();
 store.redo();
 ```
+
+# INSTALLATION
+
+npm install https://github.com/kamilmac/clerkjs.git
+
+bower install https://github.com/kamilmac/clerkjs.git
+
+source files are placed in "dist" folder.
+
+
+ 
